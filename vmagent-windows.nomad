@@ -1,28 +1,35 @@
-job "vmagent" {
+job "vmagent-windows" {
   datacenters = ["dc2"]
   namespace = "development-r2"
   type        = "system"
+  constraint {
+      attribute = "${attr.kernel.name}"
+      value     = "windows"
+  }
 
-  group "vmagent" {
+  group "vmagent-windows" {
     count = 1
 
     network {
-      mode = "bridge"
-
+      // mode = "bridge"
       port "vmagent-http" {
         to = 8429
       }
     }
 
-    task "vmagent" {
-      driver = "docker"
+    task "vmagent-windows" {
+      driver = "raw_exec"
 
       config {
-        image = "victoriametrics/vmagent:v1.81.2"
-        args = [
-          "--promscrape.config=$${NOMAD_TASK_DIR}/prometheus.yml",
-          "--remoteWrite.url=${VICTORIAMETRICS_ADDR}"
-        ]
+        command = "${NOMAD_TASK_DIR}/vmagent-windows-amd64-prod.exe"
+        args = ["-promscrape.config=${NOMAD_TASK_DIR}/prometheus.yml", "-remoteWrite.url=${VICTORIAMETRICS_ADDR}"]
+      }
+
+      artifact {
+        source = "https://nomadpackage:ANJVss4UPWpSa@package.citigo.com.vn/endpoints/wintools/content/vmagent-windows-amd64-prod.zip"
+        options {
+          archive = "zip"
+        }
       }
 
       template {

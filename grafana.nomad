@@ -1,5 +1,6 @@
 job "grafana" {
-  datacenters = ["dc1"]
+  datacenters = ["dc2"]
+  namespace = "development-r2"
   type        = "service"
 
   group "grafana" {
@@ -24,7 +25,6 @@ job "grafana" {
 
       service {
         name     = "grafana-web"
-        provider = "nomad"
         tags     = ["grafana", "web"]
         port     = "grafana-http"
       }
@@ -61,7 +61,7 @@ datasources:
   - name: Prometheus
     type: prometheus
     access: proxy
-    {{- range nomadService "vicky-web" }}
+    {{- range service "vicky-web" }}
     url: http://{{.Address}}:{{.Port}}
     {{ end -}}
 EOF

@@ -1,5 +1,6 @@
 job "victoriametrics" {
-  datacenters = ["dc1"]
+  datacenters = ["dc2"]
+  namespace = "development-r2"
   type        = "service"
 
   group "victoriametrics" {
@@ -24,7 +25,6 @@ job "victoriametrics" {
 
       service {
         name     = "vicky-web"
-        provider = "nomad"
         tags     = ["victoriametrics", "web"]
         port     = "vicky-http"
       }

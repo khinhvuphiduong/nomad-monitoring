@@ -472,7 +472,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum by (task,alloc_id)(nomad_client_allocs_memory_usage{exported_job=\"$workload\",task_group=\"$group\"}) / sum by (task,alloc_id)(nomad_client_allocs_memory_allocated{exported_job=\"$workload\",task_group=\"$group\"})",
+          "expr": "sum by (task,alloc_id)(nomad_client_allocs_memory_rss{exported_job=\"$workload\",task_group=\"$group\"}) / sum by (task,alloc_id)(nomad_client_allocs_memory_allocated{exported_job=\"$workload\",task_group=\"$group\"})",
           "legendFormat": "{{task}} - {{alloc_id}}",
           "range": true,
           "refId": "A"
